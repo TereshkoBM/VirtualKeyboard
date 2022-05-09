@@ -1,0 +1,168 @@
+@font-face {
+    font-family: "Georgia";
+    src: url("/assets/fonts/Roboto-Regular.ttf")
+}
+
+.container {
+    font-family: 'Roboto', sans-serif;
+    display: flow-root;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.text-title {
+    font-size: 30px;
+    color: blue;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.text-area {
+    display: block;
+    width: 920px;
+    height: 200px;
+    margin: 10px auto 10px;
+    padding: 10px;
+    font-size: 18px;
+    color: #555555;
+}
+
+.keyboard {
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: white;
+    position: relative;
+    width: 940px;
+    margin: 0 auto;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.row-keyboard {
+    display: flex;
+}
+
+.row-keyboard::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.key {
+    width: 48px;
+    height: 48px;
+    border: 1px solid slategray;
+    border-radius: 4px;
+    margin: 4px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}
+
+.key:hover {
+    background-color:aqua;
+    cursor: pointer;
+}
+
+.simple {
+    font-size: 26px;
+    background-color: gray;
+    color: white;
+}
+
+.special {
+    font-size: 20px;
+    background-color: black;
+    color: gray;
+}
+
+.Backspace {
+    width: 134px;
+}
+
+.Tab {
+    width: 62px;
+}
+
+.Delete {
+    width: 54px;
+}
+
+.CapsLock {
+    width: 128px;
+}
+
+.Enter {
+    width: 112px;
+}
+
+.ShiftLeft {
+    width: 128px;
+}
+
+.ArrowUp {
+    width: 48px;
+}
+
+.ShiftRight {
+    width: 50px;
+}
+
+.ControlLeft {
+    width: 78px;
+}
+
+.MetaLeft {
+    width: 48px;
+}
+
+.AltLeft {
+    width: 48px;
+}
+
+.Space {
+    width: 370px;
+}
+
+.AltRight {
+    width: 48px;
+}
+
+.ControlRight {
+    width: 78px;
+}
+
+.ArrowLeft {
+    width: 48px;
+}
+
+.ArrowDown {
+    width: 48px;
+}
+
+.ArrowRight {
+    width: 48px;
+}
+
+.hidden {
+    display: none;
+}
+
+.active {
+    background-color: blue;
+}
+
+.text-description {
+    text-align: center;
+    
+}
+
+.text-language {
+    text-align: center;
+    
+}
