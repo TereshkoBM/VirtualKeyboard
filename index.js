@@ -99,7 +99,7 @@ const createVirtualKeyboard = () => {
     rowKeyboard.appendChild(createBtn('ControlLeft', 'special', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'));
     rowKeyboard.appendChild(createBtn('MetaLeft', 'special', 'Win', 'Win', 'Win', 'Win'));
     rowKeyboard.appendChild(createBtn('AltLeft', 'special', 'Alt', 'Alt', 'Alt', 'Alt'));
-    rowKeyboard.appendChild(createBtn('Space', 'special', '', '', '', ''));
+    rowKeyboard.appendChild(createBtn('Space', 'special', ' ', ' ', ' ', ' '));
     rowKeyboard.appendChild(createBtn('AltRight', 'special', 'Alt', 'Alt', 'Alt', 'Alt'));
     rowKeyboard.appendChild(createBtn('ControlRight', 'special', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'));
     rowKeyboard.appendChild(createBtn('ArrowLeft', 'special', '◄', '◄', '◄', '◄'));
@@ -153,7 +153,7 @@ createVirtualKeyboard();
 
 const TXT_AREA = document.querySelector("#kinput");
 const KEYBOARD = document.querySelector(".keyboard");
-const KEY_ARRAY=document.querySelectorAll(".key");
+const KEY_ARRAY = document.querySelectorAll("span");
 
 let stateShiftKey = false;
 let stateCtrlKey = false;
@@ -167,18 +167,81 @@ let stateUpper = false;
 KEYBOARD.addEventListener("mousedown", clickDownKey);
 KEYBOARD.addEventListener("mouseup", clickUpKey);
 
-kinput.onkeydown = function(e){
-   if(e.ctrlKey && e.altKey) {
-       stateLng=!stateLng;
-       console.log("Переключение языка " + stateLng);       
-   }
-   if(e.shiftKey){
-    stateUpper=!stateUpper;
-    console.log("Нажата shift " + stateUpper);       
-   }
+kinput.onkeyup = function (e) {
+    let reset = false;
+    if (e.shiftKey) {
+        stateUpper = !stateUpper;
+        console.log("Отпущена shift " + stateUpper);
+        reset = true;
+    }
+    if (reset) switchKeyboard();
 }
 
+kinput.onkeydown = function (e) {
+    let reset = false;
+    if (e.ctrlKey && e.altKey) {
+        stateLng = !stateLng;
+        console.log("Переключение языка " + stateLng);
+        reset = true;
+    }
+    if (e.shiftKey) {
+        stateUpper = !stateUpper;
+        console.log("Нажата shift " + stateUpper);
+        reset = true;
+    }
+    if (reset) switchKeyboard();
+}
+kinput.addEventListener("keyup", function(e) {
+    let reset = false;
+    if (e.getModifierState("CapsLock")) {
+        console.log("Нажата CapsLock " + e.getModifierState("CapsLock"));
+        console.log("stateCapsLock "+stateCapsLock);
+    }
+    if (e.getModifierState("CapsLock") !== stateCapsLock) {
+        stateCapsLock = !stateCapsLock;
+        console.log("Нажата CapsLock " + stateCapsLock);
+        reset = true;
+    }
+    if (reset) switchKeyboard();
+  });
 
+
+
+function switchKeyboard() {
+    let stateUpp = (!stateUpper && stateCapsLock) || (stateUpper && !stateCapsLock);
+    console.log("rus " + stateLng + "; Upper " + stateUpp);
+    for (var item of KEY_ARRAY) {
+        console.log(item.closest('.key').dataset.key);
+        if (item.classList.contains('eng') && item.classList.contains('lowercase')) {
+            if (!stateLng && !stateUpp) {
+                item.classList.remove("hidden");
+                console.log("eng lowercase");
+            }
+            else item.classList.add("hidden");
+        }
+        if (item.classList.contains('eng') && item.classList.contains('uppercase')) {
+            if (!stateLng && stateUpp) {
+                item.classList.remove("hidden");
+                console.log("eng uppercase");
+            }
+            else item.classList.add("hidden");
+        }
+        if (item.classList.contains('rus') && item.classList.contains('lowercase')) {
+            if (stateLng && !stateUpp) {
+                item.classList.remove("hidden");
+                console.log("rus lowercase");
+            }
+            else item.classList.add("hidden");
+        }
+        if (item.classList.contains('rus') && item.classList.contains('uppercase')) {
+            if (stateLng && stateUpp) {
+                item.classList.remove("hidden");
+                console.log("rus uppercase");
+            }
+            else item.classList.add("hidden");
+        }
+    }
+}
 
 function handle(e) {
     //if (form.elements[e.type + 'Ignore'].checked) return;
@@ -197,12 +260,12 @@ function handle(e) {
     console.log('Нажата :' + text);
 }
 
-function clickDownKey(event) {   
+function clickDownKey(event) {
     if (event.target.closest('.key')) {
-        let keyBtn=event.target.closest('.key');
+        let keyBtn = event.target.closest('.key');
         //event.target.closest('.key').classList.add("active"); 
-        if(keyBtn.classList.contains('simple')) 
-        insertAtArea((keyBtn.innerText));
+        if (keyBtn.classList.contains('simple'))
+            insertAtArea((keyBtn.innerText));
     }
 }
 
@@ -214,26 +277,26 @@ function clickUpKey(event) {
     }
 }
 
-function clk(key,Code) {
-    var event = new KeyboardEvent("keydown", {bubbles: true, "key": key, "code": Code});
+/* function clk(key, Code) {
+    var event = new KeyboardEvent("keydown", { bubbles: true, "key": key, "code": Code });
     kinput.focus();
-    kinput.dispatchEvent(event); 
+    kinput.dispatchEvent(event);
 }
-
+ */
 function insertAtArea(text) {
     var scrollPos = kinput.scrollTop;
-    
+
     kinput.focus();
-    let posStart=kinput.selectionStart;
-    let posEnd=kinput.selectionEnd;
-    console.log("курсор начало :" + posStart); 
-    console.log("курсор конец :" + posEnd); 
+    let posStart = kinput.selectionStart;
+    let posEnd = kinput.selectionEnd;
+    console.log("курсор начало :" + posStart);
+    console.log("курсор конец :" + posEnd);
     var front = (kinput.value).substring(0, posStart);
     var back = (kinput.value).substring(posEnd, kinput.value.length);
     kinput.value = front + text + back;
-    kinput.selectionStart=posStart+1;
-    kinput.selectionEnd=posStart+1;
+    kinput.selectionStart = posStart + 1;
+    kinput.selectionEnd = posStart + 1;
     console.log(kinput.selectionStart);
     //kinput.scrollTop = scrollPos;
-} 
+}
 //-----------------------------------------------
