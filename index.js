@@ -442,7 +442,7 @@ function delAtArea(direction) {
 function arrowAtArea(direction) {
   let posStart = kinput.selectionStart;
   let nCols=kinput.cols;
-  console.log(nCols);
+  
   switch (direction) {
     case 0:
       if(posStart>=nCols){
