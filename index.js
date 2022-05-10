@@ -223,80 +223,78 @@ let stateUpper = false;
 KEYBOARD.addEventListener("mousedown", clickDownKey);
 KEYBOARD.addEventListener("mouseup", clickUpKey);
 
-function handle(e) {
-  let text =
-    e.type +
-    " key=" +
-    e.key +
-    " code=" +
-    e.code +
-    (e.shiftKey ? " shiftKey" : "") +
-    (e.ctrlKey ? " ctrlKey" : "") +
-    (e.altKey ? " altKey" : "") +
-    (e.metaKey ? " metaKey" : "") +
-    (e.repeat ? " (repeat)" : "") +
-    "\n";
-  console.log("Нажата :" + text);
-}
+kinput.focus();
 
 kinput.onkeyup = function (e) {
   let reset = false;
 
   if (!e.shiftKey) {
-    stateUpper = false;
-    console.log("не нажата shift " + stateUpper);
+    stateUpper = false;    
     reset = true;
   }
   e.preventDefault();
   if (reset) switchKeyboard();
+  kinput.focus();
 };
 
 kinput.onkeydown = function (e) {
   let reset = false;
   if (!e.repeat) {
     if (e.ctrlKey && e.altKey) {
-      stateLng = !stateLng;
-      console.log("Переключение языка " + stateLng);
+      stateLng = !stateLng;      
       reset = true;
     }
     if (e.shiftKey) {
-      stateUpper = true;
-      console.log("Нажата shift " + stateUpper);
+      stateUpper = true;      
       reset = true;
     }
     clickBtn(e.code);
     e.preventDefault();
     if (reset) switchKeyboard();
   }
+  kinput.focus();
 };
 
 kinput.addEventListener("keyup", function (e) {
   let reset = false;
-  if (e.getModifierState("CapsLock")) {
-    console.log("Нажата CapsLock " + e.getModifierState("CapsLock"));
-    console.log("stateCapsLock " + stateCapsLock);
-  }
+  
   if (e.getModifierState("CapsLock") !== stateCapsLock) {
-    stateCapsLock = !stateCapsLock;
-    console.log("Нажата CapsLock " + stateCapsLock);
+    stateCapsLock = !stateCapsLock;  
     reset = true;
   }
   if (reset) switchKeyboard();
+  kinput.focus();
 });
+
+function clickDownKey(event) {
+  if (event.target.closest(".key")) {
+    let keyBtn = event.target.closest(".key");
+    //event.target.closest('.key').classList.add("active");
+    putBtn(keyBtn);
+  }
+  kinput.focus();
+}
+
+function clickUpKey(event) {
+    if (event.target.closest(".key")) {
+      stateUpper = false;
+      switchKeyboard();
+    }
+    kinput.focus();
+  }
 
 function switchKeyboard() {
   let stateUpp =
     (!stateUpper && stateCapsLock) || (stateUpper && !stateCapsLock);
-  // console.log("rus " + stateLng + "; Upper " + stateUpp);
+  
   for (var item of KEY_ARRAY) {
-    // console.log(item.closest(".key").dataset.key);
+  
     if (
       item.classList.contains("eng") &&
       item.classList.contains("lowercase")
     ) {
       if (!stateLng && !stateUpp) {
-        item.classList.remove("hidden");
-        // console.log("eng lowercase");
+        item.classList.remove("hidden");  
       } else item.classList.add("hidden");
     }
     if (
@@ -304,8 +302,7 @@ function switchKeyboard() {
       item.classList.contains("uppercase")
     ) {
       if (!stateLng && stateUpp) {
-        item.classList.remove("hidden");
-        // console.log("eng uppercase");
+        item.classList.remove("hidden");        
       } else item.classList.add("hidden");
     }
     if (
@@ -314,7 +311,6 @@ function switchKeyboard() {
     ) {
       if (stateLng && !stateUpp) {
         item.classList.remove("hidden");
-        // console.log("rus lowercase");
       } else item.classList.add("hidden");
     }
     if (
@@ -323,7 +319,6 @@ function switchKeyboard() {
     ) {
       if (stateLng && stateUpp) {
         item.classList.remove("hidden");
-        // console.log("rus uppercase");
       } else item.classList.add("hidden");
     }
   }
@@ -336,30 +331,8 @@ function clickBtn(codeKey) {
     if (item.closest(".key").dataset.key === codeKey) {
       if (!item.classList.contains("hidden")) {
         putBtn(item.closest(".key"));
-        /* if (item.closest(".key").classList.contains("simple")) {
-          insertAtArea(item.innerText);
-          console.log(item.innerText);
-        } */
       }
     }
-  }
-}
-
-function clickDownKey(event) {
-  if (event.target.closest(".key")) {
-    let keyBtn = event.target.closest(".key");
-    //event.target.closest('.key').classList.add("active");
-    putBtn(keyBtn);
-  }
-}
-
-function clickUpKey(event) {
-  if (event.target.closest(".key")) {
-    stateUpper = false;
-
-    switchKeyboard();
-    //console.log(event.target.closest(".key").dataset.key);
-    //event.target.closest('.key').classList.remove("active");
   }
 }
 
@@ -387,7 +360,6 @@ function putBtn(keyBtn) {
         {
           keyBtn.classList.toggle("active");
           stateCapsLock = !stateCapsLock;
-          console.log("Нажата CapsLock " + stateCapsLock);
           reset = true;
         }
         break;
@@ -396,7 +368,6 @@ function putBtn(keyBtn) {
         {
           //keyBtn.classList.toggle("active");
           stateUpper = true;
-          console.log("Нажата shift " + stateUpper);
           reset = true;
         }
         break;
@@ -415,17 +386,17 @@ function putBtn(keyBtn) {
           arrowAtArea(0);
         }
         break;
-        case "ArrowLeft":
+      case "ArrowLeft":
         {
           arrowAtArea(1);
         }
         break;
-        case "ArrowRight":
+      case "ArrowRight":
         {
           arrowAtArea(2);
         }
         break;
-        case "ArrowDown":
+      case "ArrowDown":
         {
           arrowAtArea(3);
         }
@@ -448,8 +419,8 @@ function insertAtArea(text) {
   let front = kinput.value.substring(0, posStart);
   let back = kinput.value.substring(posEnd, kinput.value.length);
   kinput.value = front + text + back;
-  kinput.selectionStart = posStart + 1;
-  kinput.selectionEnd = posStart + 1;
+  kinput.selectionStart = posStart + text.lengGth;
+  kinput.selectionEnd = posStart + text.length;
 }
 
 function delAtArea(direction) {
@@ -465,23 +436,23 @@ function delAtArea(direction) {
 }
 
 function arrowAtArea(direction) {
-    let posStart = kinput.selectionStart;
+  let posStart = kinput.selectionStart;
   switch (direction) {
     case 0:
       break;
     case 1:
       {
         if (kinput.selectionStart > 0) {
-            kinput.selectionStart = posStart-1;
-            kinput.selectionEnd = posStart-1;
+          kinput.selectionStart = posStart - 1;
+          kinput.selectionEnd = posStart - 1;
         }
       }
       break;
     case 2:
       {
-        if (kinput.selectionStart < kinput.value.length - 1){
-            kinput.selectionStart = posStart+1;
-            kinput.selectionEnd = posStart+1;
+        if (kinput.selectionStart < kinput.value.length - 1) {
+          kinput.selectionStart = posStart + 1;
+          kinput.selectionEnd = posStart + 1;
         }
       }
       break;
