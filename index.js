@@ -271,6 +271,7 @@ function clickDownKey(event) {
     let keyBtn = event.target.closest(".key");
     //event.target.closest('.key').classList.add("active");
     putBtn(keyBtn);
+    
   }
   kinput.focus();
 }
@@ -278,6 +279,7 @@ function clickDownKey(event) {
 function clickUpKey(event) {
     if (event.target.closest(".key")) {
       stateUpper = false;
+      event.target.closest(".key").classList.remove("animate");
       switchKeyboard();
     }
     kinput.focus();
@@ -338,6 +340,8 @@ function clickBtn(codeKey) {
 
 function putBtn(keyBtn) {
   let reset = false;
+  keyBtn.classList.add("animate");
+  setTimeout(() => keyBtn.classList.remove("animate"), 300);
   if (keyBtn.classList.contains("simple")) insertAtArea(keyBtn.innerText);
   else {
     switch (keyBtn.dataset.key) {
@@ -402,7 +406,7 @@ function putBtn(keyBtn) {
         }
         break;
     }
-  }
+  }  
   if (reset) switchKeyboard();
 }
 
@@ -437,8 +441,14 @@ function delAtArea(direction) {
 
 function arrowAtArea(direction) {
   let posStart = kinput.selectionStart;
+  let nCols=kinput.cols;
+  console.log(nCols);
   switch (direction) {
     case 0:
+      if(posStart>=nCols){
+        kinput.selectionStart = posStart - nCols;
+        kinput.selectionEnd = posStart - nCols;
+      }
       break;
     case 1:
       {
@@ -457,6 +467,10 @@ function arrowAtArea(direction) {
       }
       break;
     case 3:
+      if((posStart+nCols)< kinput.value.length){
+        kinput.selectionStart = posStart + nCols;
+        kinput.selectionEnd = posStart + nCols;
+      }
       break;
   }
 }

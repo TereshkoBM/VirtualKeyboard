@@ -65,8 +65,14 @@
 }
 
 .key:hover {
-    background-color:aqua;
+    background-color:aqua;    
     cursor: pointer;
+}
+
+.key.animate{
+    background-color:coral;
+    border-radius:50%;   
+    transition: all 0.3s ease-in-out;
 }
 
 .simple {
