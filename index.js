@@ -419,7 +419,7 @@ function insertAtArea(text) {
   let front = kinput.value.substring(0, posStart);
   let back = kinput.value.substring(posEnd, kinput.value.length);
   kinput.value = front + text + back;
-  kinput.selectionStart = posStart + text.lengGth;
+  kinput.selectionStart = posStart + text.length;
   kinput.selectionEnd = posStart + text.length;
 }
 
