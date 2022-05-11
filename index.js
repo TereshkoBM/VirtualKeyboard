@@ -241,7 +241,8 @@ kinput.onkeydown = function (e) {
   let reset = false;
   if (!e.repeat) {
     if (e.ctrlKey && e.altKey) {
-      stateLng = !stateLng;      
+      stateLng = !stateLng;  
+      setLocalStorage();
       reset = true;
     }
     if (e.shiftKey) {
@@ -476,3 +477,15 @@ function arrowAtArea(direction) {
 }
 
 //-----------------------------------------------
+function setLocalStorage() {
+  localStorage.setItem("stateLng", stateLng);
+}
+window.addEventListener("beforeunload", setLocalStorage);
+
+function getLocalStorage() {
+  if (localStorage.getItem("stateLng")) {
+    stateLng = localStorage.getItem("stateLng")==='true'?true:false;
+    switchKeyboard();
+  }
+}
+window.addEventListener("load", getLocalStorage);
