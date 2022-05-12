@@ -22,7 +22,7 @@ const createVirtualKeyboard = () => {
   rowKeyboard.classList.add("row-keyboard");
   rowKeyboard.appendChild(createBtn("Backquote", "simple", "ё", "Ё", "`", "~"));
   rowKeyboard.appendChild(createBtn("Digit1", "simple", "1", "!", "1", "!"));
-  rowKeyboard.appendChild(createBtn("Digit2", "simple", "2", '"', "2", "@"));
+  rowKeyboard.appendChild(createBtn("Digit2", "simple", "2", "\"", "2", "@"));
   rowKeyboard.appendChild(createBtn("Digit3", "simple", "3", "№", "3", "#"));
   rowKeyboard.appendChild(createBtn("Digit4", "simple", "4", ";", "4", "$"));
   rowKeyboard.appendChild(createBtn("Digit5", "simple", "5", "%", "5", "%"));
@@ -98,7 +98,7 @@ const createVirtualKeyboard = () => {
   rowKeyboard.appendChild(createBtn("KeyK", "simple", "л", "Л", "k", "K"));
   rowKeyboard.appendChild(createBtn("KeyL", "simple", "д", "Д", "l", "L"));
   rowKeyboard.appendChild(createBtn("Semicolon", "simple", "ж", "Ж", ";", ":"));
-  rowKeyboard.appendChild(createBtn("Quote", "simple", "э", "Э", "'", '"'));
+  rowKeyboard.appendChild(createBtn("Quote", "simple", "э", "Э", "'", "\""));
   rowKeyboard.appendChild(
     createBtn("Enter", "special", "Enter", "Enter", "Enter", "Enter")
   );
@@ -180,6 +180,8 @@ const createVirtualKeyboard = () => {
 };
 
 const createBtn = (nameBtn, type, rusLower, rusUpper, engLower, engUpper) => {
+  let btnKeyboard;
+  let letterBtn;
   btnKeyboard = document.createElement("div");
   btnKeyboard.classList.add("key", nameBtn, type);
   btnKeyboard.setAttribute("data-key", nameBtn);
@@ -207,15 +209,15 @@ createVirtualKeyboard();
 // ----------- Обработка событий ----------------
 //kinput.onkeydown = kinput.onkeyup = kinput.onkeypress = handle;
 
-const TXT_AREA = document.querySelector("#kinput");
+const KINPUT = document.querySelector("#kinput");
 const KEY_CAPSLOCK = document.querySelector(".CapsLock");
 const KEYBOARD = document.querySelector(".keyboard");
 const KEY_ARRAY = document.querySelectorAll("span");
 
-let stateShiftKey = false;
-let stateCtrlKey = false;
-let stateAltKey = false;
-let stateMetaKey = false;
+// let stateShiftKey = false;
+// let stateCtrlKey = false;
+// let stateAltKey = false;
+// let stateMetaKey = false;
 let stateCapsLock = false;
 let stateLng = false;
 let stateUpper = false;
@@ -223,9 +225,9 @@ let stateUpper = false;
 KEYBOARD.addEventListener("mousedown", clickDownKey);
 KEYBOARD.addEventListener("mouseup", clickUpKey);
 
-kinput.focus();
+KINPUT.focus();
 
-kinput.onkeyup = function (e) {
+KINPUT.onkeyup = function (e) {
   let reset = false;
 
   if (!e.shiftKey) {
@@ -234,10 +236,10 @@ kinput.onkeyup = function (e) {
   }
   e.preventDefault();
   if (reset) switchKeyboard();
-  kinput.focus();
+  KINPUT.focus();
 };
 
-kinput.onkeydown = function (e) {
+KINPUT.onkeydown = function (e) {
   let reset = false;
   if (!e.repeat) {
     if (e.ctrlKey && e.altKey) {
@@ -253,10 +255,10 @@ kinput.onkeydown = function (e) {
     e.preventDefault();
     if (reset) switchKeyboard();
   }
-  kinput.focus();
+  KINPUT.focus();
 };
 
-kinput.addEventListener("keyup", function (e) {
+KINPUT.addEventListener("keyup", function (e) {
   let reset = false;
   
   if (e.getModifierState("CapsLock") !== stateCapsLock) {
@@ -264,7 +266,7 @@ kinput.addEventListener("keyup", function (e) {
     reset = true;
   }
   if (reset) switchKeyboard();
-  kinput.focus();
+  KINPUT.focus();
 });
 
 function clickDownKey(event) {
@@ -274,7 +276,7 @@ function clickDownKey(event) {
     putBtn(keyBtn);
     
   }
-  kinput.focus();
+  KINPUT.focus();
 }
 
 function clickUpKey(event) {
@@ -283,7 +285,7 @@ function clickUpKey(event) {
       event.target.closest(".key").classList.remove("animate");
       switchKeyboard();
     }
-    kinput.focus();
+    KINPUT.focus();
   }
 
 function switchKeyboard() {
@@ -413,64 +415,64 @@ function putBtn(keyBtn) {
 
 /* function clk(key, Code) {
     var event = new KeyboardEvent("keydown", { bubbles: true, "key": key, "code": Code });
-    kinput.focus();
-    kinput.dispatchEvent(event);
+    KINPUT.focus();
+    KINPUT.dispatchEvent(event);
 }
  */
 function insertAtArea(text) {
-  kinput.focus();
-  let posStart = kinput.selectionStart;
-  let posEnd = kinput.selectionEnd;
-  let front = kinput.value.substring(0, posStart);
-  let back = kinput.value.substring(posEnd, kinput.value.length);
-  kinput.value = front + text + back;
-  kinput.selectionStart = posStart + text.length;
-  kinput.selectionEnd = posStart + text.length;
+  KINPUT.focus();
+  let posStart = KINPUT.selectionStart;
+  let posEnd = KINPUT.selectionEnd;
+  let front = KINPUT.value.substring(0, posStart);
+  let back = KINPUT.value.substring(posEnd, KINPUT.value.length);
+  KINPUT.value = front + text + back;
+  KINPUT.selectionStart = posStart + text.length;
+  KINPUT.selectionEnd = posStart + text.length;
 }
 
 function delAtArea(direction) {
-  kinput.focus();
-  let posStart = direction ? kinput.selectionStart : kinput.selectionStart - 1;
+  KINPUT.focus();
+  let posStart = direction ? KINPUT.selectionStart : KINPUT.selectionStart - 1;
   if (posStart >= 0) {
-    kinput.value =
-      kinput.value.substring(0, posStart) +
-      kinput.value.substring(posStart + 1, kinput.value.length);
-    kinput.selectionStart = posStart;
-    kinput.selectionEnd = posStart;
+    KINPUT.value =
+      KINPUT.value.substring(0, posStart) +
+      KINPUT.value.substring(posStart + 1, KINPUT.value.length);
+    KINPUT.selectionStart = posStart;
+    KINPUT.selectionEnd = posStart;
   }
 }
 
 function arrowAtArea(direction) {
-  let posStart = kinput.selectionStart;
-  let nCols=kinput.cols;
+  let posStart = KINPUT.selectionStart;
+  let nCols=KINPUT.cols;
   
   switch (direction) {
     case 0:
       if(posStart>=nCols){
-        kinput.selectionStart = posStart - nCols;
-        kinput.selectionEnd = posStart - nCols;
+        KINPUT.selectionStart = posStart - nCols;
+        KINPUT.selectionEnd = posStart - nCols;
       }
       break;
     case 1:
       {
-        if (kinput.selectionStart > 0) {
-          kinput.selectionStart = posStart - 1;
-          kinput.selectionEnd = posStart - 1;
+        if (KINPUT.selectionStart > 0) {
+          KINPUT.selectionStart = posStart - 1;
+          KINPUT.selectionEnd = posStart - 1;
         }
       }
       break;
     case 2:
       {
-        if (kinput.selectionStart < kinput.value.length - 1) {
-          kinput.selectionStart = posStart + 1;
-          kinput.selectionEnd = posStart + 1;
+        if (KINPUT.selectionStart < KINPUT.value.length - 1) {
+          KINPUT.selectionStart = posStart + 1;
+          KINPUT.selectionEnd = posStart + 1;
         }
       }
       break;
     case 3:
-      if((posStart+nCols)< kinput.value.length){
-        kinput.selectionStart = posStart + nCols;
-        kinput.selectionEnd = posStart + nCols;
+      if((posStart+nCols)< KINPUT.value.length){
+        KINPUT.selectionStart = posStart + nCols;
+        KINPUT.selectionEnd = posStart + nCols;
       }
       break;
   }
@@ -484,7 +486,7 @@ window.addEventListener("beforeunload", setLocalStorage);
 
 function getLocalStorage() {
   if (localStorage.getItem("stateLng")) {
-    stateLng = localStorage.getItem("stateLng")==='true'?true:false;
+    stateLng = localStorage.getItem("stateLng") ===  "true" ?true:false;
     switchKeyboard();
   }
 }
