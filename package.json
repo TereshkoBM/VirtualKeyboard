@@ -1,0 +1,26 @@
+{
+  "name": "virtualkeyboard",
+  "version": "1.0.0",
+  "description": "RSS Virtual KeyBoard",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TereshkoBM/VirtualKeyboard.git"
+  },
+  "keywords": [
+    "js",
+    "javascript"
+  ],
+  "author": "Tereshko Boris",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TereshkoBM/VirtualKeyboard/issues"
+  },
+  "homepage": "https://github.com/TereshkoBM/VirtualKeyboard#readme",
+  "devDependencies": {
+    "eslint": "^8.15.0"
+  }
+}
