@@ -121,7 +121,7 @@ const createVirtualKeyboard = () => {
   rowKeyboard.appendChild(createBtn("KeyN", "simple", "т", "Т", "n", "N"));
   rowKeyboard.appendChild(createBtn("KeyM", "simple", "ь", "Ь", "m", "M"));
   rowKeyboard.appendChild(
-    createBtn("NumpadDecimal", "simple", "б", "Б", ",", "<")
+    createBtn("Comma", "simple", "б", "Б", ",", "<")
   );
   rowKeyboard.appendChild(createBtn("Period", "simple", "ю", "Ю", ".", ">"));
   rowKeyboard.appendChild(createBtn("Slash", "simple", ".", ",", "/", "?"));
